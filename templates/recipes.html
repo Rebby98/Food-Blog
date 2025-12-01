@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes | My Food Blog</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('cooking.jpeg')
+    }
+    .navbar{
+      padding: 0.6rem;
+      background-color: rgb(46, 163, 163);
+    }
+    .navbar-nav .nav-link{
+      border-radius: 12px;
+      color: #ffcc00;
+      font-size: 18px;
+      font-weight: bold;
+      box-sizing: 15px;
+    }
+    .recipe-card img {
+      height: 200px;
+      object-fit: cover;
+    }
+    .navbar-brand{
+      font-weight: bold;
+      font-size: 30px;
+      color: black;
+      font-family: 'Times New Roman', Times, serif;
+      
+    }
+    .filters {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg ">
+    <div class="container">
+      <img src="{{ url_for('static', filename='images/food logo.jpeg') }}" alt="Logo" width="40" height="40" class="me-2 rounded-circle">
+      <a class="navbar-brand" href="{{ url_for('home') }}">Becca Foodies</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('home') }}"><i class='bx bx-home'></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('about') }}"><i class='bx bx-info-octagon'></i> About</a></li>
+          <li class="nav-item"><a class="nav-link active mx-3" href="{{ url_for('recipes') }}"><i class='bx bx-cookie'></i> Recipes</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('blog') }}"><i class='bx bx-article'></i> Blog</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('saved_recipes') }}"><i class='bx bx-cookie'></i>Saved Recipes</a></li>
+          
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Recipes Page Header -->
+  <section class="py-5 text-center bg-light">
+    <div class="container">
+      <h1 class="fw-bold">Browse Recipes</h1>
+      <p class="text-muted">Search and filter recipes by cuisine, diet, goals, and prep time</p>
+      <input type="search" id="search-input" class="form-control w-50 mx-auto" placeholder="Search recipes by keyword or ingredient...">
+    </div>
+  </section>
+
+  <div class="container my-5">
+    <div class="row">
+      <!-- Filters Sidebar -->
+      <aside class="col-md-3">
+        <div class="filters">
+          <h5 class="fw-bold mb-3">Filter Recipes</h5>
+          
+          <div class="mb-3">
+            <label class="form-label">Cuisine</label>
+            <select id="cuisine-filter" class="form-select">
+              <option value="all">All</option>
+              <option value="kenyan">Kenyan</option>
+              <option value="african">African</option>
+              <option value="international">International</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Diet Type</label>
+            <select id="diet-filter" class="form-select">
+              <option value="all">All</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="healthy">Healthy</option>
+              <option value="non-vegeterian">Non-vegeterian</option>
+              <option value="keto">Keto</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Goal</label>
+            <select id="goal-filter" class="form-select">
+              <option value="all">All</option>
+              <option value="weight loss">Weight Loss</option>
+              <option value="weight gain">Weight Gain</option>
+              <option value="energy">Energy Foods</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Preparation Time</label>
+            <select id="time-filter" class="form-select">
+              <option value="any">Any</option>
+              <option value="under 15 min">Under 15 min</option>
+              <option value="15 - 30 min">15 - 30 min</option>
+              <option value="30 - 60 min">30 - 60 min</option>
+              <option value="over 1 hour">Over 1 hour</option>
+            </select>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Recipes List -->
+      <main class="col-md-9">
+        <div class="row g-4" id="recipes-container">
+          {% for recipe in recipes %}
+          <div class="col-md-4 recipe-card-item" 
+               data-cuisine="{{ recipe.cuisine|lower }}" 
+               data-diet="{{ recipe.diet_type|lower }}" 
+               data-goal="{{ recipe.category|lower }}" 
+               data-time="{{ recipe.prep_time|lower }}">
+            <div class="card recipe-card">
+              <!-- ✅ dynamic recipe image -->
+              {% if recipe.image %}
+                <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
+              {% else %}
+                <img src="{{ url_for('static', filename='images/default.png') }}" class="card-img-top" alt="No Image">
+              {% endif %}
+
+              <div class="card-body">
+                <h5 class="card-title">{{ recipe.title }}</h5>
+                <p class="card-text">{{ recipe.description[:80] }}...</p>
+                {% if recipe.cuisine %}<span class="badge bg-success">{{ recipe.cuisine }}</span>{% endif %}
+                {% if recipe.diet_type %}<span class="badge bg-info">{{ recipe.diet_type }}</span>{% endif %}
+                <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-sm btn-primary mt-2">View Recipe</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center bg-dark text-light py-3">
+    <p>&copy; 2025 My Food Blog | All rights reserved.</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Filtering JS -->
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const cuisineFilter = document.getElementById('cuisine-filter');
+    const dietFilter = document.getElementById('diet-filter');
+    const goalFilter = document.getElementById('goal-filter');
+    const timeFilter = document.getElementById('time-filter');
+    const recipes = document.querySelectorAll('.recipe-card-item');
+
+    function filterRecipes() {
+      const searchText = searchInput.value.toLowerCase();
+      const cuisine = cuisineFilter.value;
+      const diet = dietFilter.value;
+      const goal = goalFilter.value;
+      const time = timeFilter.value;
+
+      recipes.forEach(recipe => {
+        const title = recipe.querySelector('.card-title').innerText.toLowerCase();
+        const description = recipe.querySelector('.card-text').innerText.toLowerCase();
+        const recipeCuisine = recipe.dataset.cuisine;
+        const recipeDiet = recipe.dataset.diet;
+        const recipeGoal = recipe.dataset.goal;
+        const recipeTime = recipe.dataset.time;
+
+        const matchesSearch = title.includes(searchText) || description.includes(searchText);
+        const matchesCuisine = (cuisine === 'all' || recipeCuisine === cuisine);
+        const matchesDiet = (diet === 'all' || recipeDiet === diet);
+        const matchesGoal = (goal === 'all' || recipeGoal === goal);
+        const matchesTime = (time === 'any' || recipeTime === time);
+
+        if (matchesSearch && matchesCuisine && matchesDiet && matchesGoal && matchesTime) {
+          recipe.style.display = '';
+        } else {
+          recipe.style.display = 'none';
+        }
+      });
+    }
+
+    searchInput.addEventListener('input', filterRecipes);
+    cuisineFilter.addEventListener('change', filterRecipes);
+    dietFilter.addEventListener('change', filterRecipes);
+    goalFilter.addEventListener('change', filterRecipes);
+    timeFilter.addEventListener('change', filterRecipes);
+  </script>
+</body>
+</html>

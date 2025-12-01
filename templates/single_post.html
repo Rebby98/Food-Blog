@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ blog.title }} | My Food Blog</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background: #fafafa;
+    }
+    .navbar-brand{
+      font-weight: bold;
+      font-size: 40px;
+      color: black;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    header {
+      background: rgb(46, 163, 163);
+      color: #fff;
+      padding: 0.1rem;
+      text-align: center;
+    }
+    .header h2{
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: bold;
+    }
+
+    .container {
+      width: 85%;
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .blog-header img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      height: 400px
+    }
+    .blog-header h1{
+        color:#2dd0db;
+        font-weight: bold;
+    }
+
+    .blog-meta {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .blog-meta i {
+      margin-right: 5px;
+      color: #e67e22;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .blog-content p {
+      margin-bottom: 1.2rem;
+      text-align: justify;
+      font-size: 1.3rem;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    .related-posts {
+      margin-top: 2rem;
+    }
+
+    .related-posts h3 {
+      margin-bottom: 1rem;
+      color: #e67e22;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .related-item {
+      background: #f9f9f9;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .related-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .related-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+    }
+
+    .related-item h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .related-item a {
+      text-decoration: none;
+      color: #e67e22;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .related-item a:hover {
+      color: #d35400;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      text-decoration: none;
+      color: #fff;
+      background: #e67e22;
+      padding: 0.7rem 1.2rem;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .back-link:hover {
+      background: #d35400;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>My Food Blog</h2>
+  </header>
+
+  <div class="container">
+    <!-- Blog Post -->
+    <div class="blog-header">
+      {% if blog.image %}
+        <img src="{{ url_for('static', filename='images/' ~ blog.image) }}" alt="{{ blog.title }}">
+      {% else %}
+        <img src="{{ url_for('static', filename='images/default.jpg') }}" alt="Default Image">
+      {% endif %}
+      <h1>{{ blog.title }}</h1>
+      <div class="blog-meta">
+        <p>
+          <i class="fa fa-user"></i> By {{ blog.author or "Admin" }} | 
+          <i class="fa fa-calendar"></i> {{ blog.date_posted.strftime('%b %d, %Y') }} | 
+          <i class="fa fa-tag"></i> {{ blog.category or "Uncategorized" }}
+        </p>
+      </div>
+    </div>
+
+    <div class="blog-content">
+      <p>{{ blog.content|safe }}</p>
+    </div>
+
+    <!-- Related Posts -->
+    {% if related_posts %}
+    <div class="related-posts">
+      <h3>Related Posts</h3>
+      <div class="related-grid">
+        {% for related in related_posts %}
+        <div class="related-item">
+          {% if related.image %}
+            <img src="{{ url_for('static', filename='images/' ~ related.image) }}" alt="{{ related.title }}">
+          {% endif %}
+          <h4>{{ related.title|safe }}</h4>
+          <a href="{{ url_for('view_blog', blog_id=related.id) }}">Read More</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <a href="{{ url_for('blog') }}" class="back-link"><i class="fa fa-arrow-left"></i> More Blogs Here</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Blog | Home</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+     background-image: url("{{ url_for('static', filename='images/background 2.png') }}");
+     background-size: cover;    
+     background-position: center;  
+     background-repeat: no-repeat; 
+     background-attachment: fixed; 
+    }
+    .navbar {
+      padding: 0.6rem;
+      background-color: rgb(46, 163, 163);
+    }
+    .navbar-nav .nav-link {
+      border-radius: 15px;
+      color: #ffcc00;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 40px;
+      color: black;
+      font-family: 'Times New Roman', Times, serif;
+      
+    }
+    .navbar-left{
+      display: flex;
+      align-items: center;
+      
+    }
+    .auth-buttons .btn{
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffcc00;
+    }
+    .hero {
+      color: rgb(19, 97, 100);
+      text-align: center;
+      padding: 120px 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .categories h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      color:green;
+    }
+    .categories .btn {
+      background-color: rgb(171, 216, 216);
+      font-size: 1.2rem;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+    .recipes h2 {
+      font-weight: bold;
+      color:green;
+    }
+    .recipe-card img {
+      height: 300px;
+      object-fit: cover;
+      
+    }
+    .recipe-card :hover{
+      transform: scale(1.03);
+    }
+    .card-title {
+      font-weight: bold;
+    }
+    .blog h2 {
+      font-weight: bold;
+      color: green;
+    }
+  .blog-card:hover{
+    transform: scale(1.03);
+    
+  }
+    footer {
+      background: #333;
+      color: #fff;
+      padding: 30px 20px;
+      margin-top: 40px;
+    }
+    footer a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <div class="navbar-left">
+      <img src="{{ url_for('static', filename='images/food logo.jpeg') }}" alt="Logo" width="40" height="40" class="me-2 rounded-circle">
+      <a class="navbar-brand" href="{{ url_for('home') }}">Becca Foodies</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+          <div class="auth-buttons">
+      <a href="{{ url_for('login') }}" class="btn btn-login"><i class='bxr  bx-user'    ></i> Login</a>
+      <a href="{{ url_for('register') }}" class="btn btn-register"><i class='bxr  bx-user-plus'    ></i> Register</a>
+     
+
+    </div>
+
+    </div>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          
+          <li class="nav-item"><a class="nav-link active mx-3" href="{{ url_for('home') }}"><i class='bx bx-home'></i> Home</a></li>
+           <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('about') }}"><i class='bx bx-info-octagon'></i> About</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('recipes') }}"><i class='bx bx-cookie'></i> Recipes</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('blog') }}"><i class='bx bx-article'></i> Blog</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('saved_recipes') }}"><i class='bx bx-cookie'></i>Saved Recipes</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('admin_login') }}"><i class='bxr  bx-user'    ></i></a></li>
+          
+  
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Discover Delicious Recipes</h1>
+      <p>From Kenyan cuisines to healthy lifestyle meals</p>
+      <form class="d-flex justify-content-center mt-4" onsubmit="event.preventDefault(); searchRecipes();">
+  <input class="form-control w-50" type="search" placeholder="Search recipes by keyword or ingredient..." onkeyup="searchRecipes()" aria-label="Search">
+  <button type="button" onclick="searchRecipes()" class="btn btn-warning ms-2">Search</button>
+</form>
+
+
+    </div>
+  </section>
+
+  <!-- Categories -->
+<!-- Categories -->
+<section class="container py-1">
+  <div class="categories">
+    <h2 class="text-center mb-4">Explore Foods by Categories</h2>
+    <div class="row text-center">
+      {% for category in categories %}
+        <div class="col-md-2 col-6 mb-3">
+          <a href="{{ url_for('recipes_by_category', category_id=category.id) }}" 
+             class="btn btn-outline-dark w-100">
+            {{ category.name }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+  <!-- Featured Recipes -->
+  <section class="container py-5">
+    <div class="recipes">
+      <h2 class="text-center mb-4">Featured Recipes</h2>
+      <div class="row g-4">
+        {% for recipe in featured_recipes %}
+        <div class="col-md-4">
+          <div class="card recipe-card">
+                        {% if recipe.image %}
+                <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
+              {% else %}
+                <img src="{{ url_for('static', filename='images/default.png') }}" class="card-img-top" alt="No Image">
+              {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ recipe.title }}</h5>
+              <p class="card-text">{{ recipe.description }}</p>
+              <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-sm btn-primary">View Recipe</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section class="container py-5">
+    <div class="blog">
+      <h2 class="text-center mb-4">From the Blog</h2>
+      <div class="row g-4">
+        {% for blog in latest_blogs %}
+        <div class="col-md-4">
+          <div class="card blog-card">
+            <img src="{{ url_for('static', filename='images/' ~ blog.image) }}" class="card-img-top" height="400" width="400" alt="{{ blog.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ blog.title }}</h5>
+              <p class="card-text">{{ blog.content[:100]|safe }}...</p>
+              <a href="{{ url_for('single_post', post_id=blog.id) }}" class="btn btn-sm btn-secondary">Read More</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <p>&copy; 2025 My Food Blog | All rights reserved.</p>
+
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+let searchTimeout;
+let originalHomepageRecipesHTML = ""; // store homepage recipes for reset
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector(".recipes .row");
+  if (container) {
+    // Save the original homepage recipes
+    originalHomepageRecipesHTML = container.innerHTML;
+  }
+});
+
+function searchRecipes() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const input = document.querySelector('.form-control[type="search"]');
+    const filter = input.value.trim().toLowerCase();
+    const container = document.querySelector('.recipes .row');
+
+    // If search box is empty — restore homepage recipes only
+    if (filter === "") {
+      container.innerHTML = originalHomepageRecipesHTML;
+
+      let status = document.getElementById('search-status');
+      if (status) status.textContent = "";
+      return;
+    }
+
+    // Otherwise — fetch results from database
+    fetch(`/search_recipes?q=${encodeURIComponent(filter)}`)
+      .then(response => response.json())
+      .then(recipes => {
+        container.innerHTML = ''; // Clear old results
+
+        if (recipes.length > 0) {
+          recipes.forEach(recipe => {
+            const card = document.createElement('div');
+            card.className = 'col-md-4';
+            card.innerHTML = `
+              <div class="card recipe-card mb-4">
+                <img src="${recipe.image ? '/static/images/' + recipe.image : '/static/images/default.png'}"
+                     class="card-img-top" alt="${recipe.title}" style="height:300px; object-fit:cover;">
+                <div class="card-body">
+                  <h5 class="card-title">${recipe.title}</h5>
+                  <p class="card-text">${recipe.description ? recipe.description.substring(0, 100) + '...' : ''}</p>
+                  <a href="/recipe/${recipe.id}" class="btn btn-sm btn-primary">View Recipe</a>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = '<p class="text-center mt-3">No recipes matched your search.</p>';
+        }
+      })
+      .catch(err => console.error("Error searching recipes:", err));
+  }, 400);
+}
+</script>
+
+
+
+</body>
+</html>
