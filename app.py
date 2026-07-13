@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 from werkzeug.utils import secure_filename
 import os
+from flask_migrate import Migrate
 from flask_login import UserMixin
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, login_required, current_user
@@ -13,39 +14,45 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 
 
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 
 
 app = Flask(__name__)
-import os
 
-app.config["SECRET_KEY"] = os.environ.get(
-    "SECRET_KEY",
-    "becca.2029"
-)
-
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.secret_key = app.config["SECRET_KEY"]
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+database_url = os.getenv(
     "DATABASE_URL",
     "sqlite:///foodblog.db"
 )
 
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace(
+        "postgres://",
+        "postgresql://",
+        1
+    )
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
-app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
-app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_USERNAME")
-
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = app.config["MAIL_USERNAME"]
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
 db = SQLAlchemy(app)
 
+migrate = Migrate(app, db)
 
 # Set the upload folder path
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/images')
