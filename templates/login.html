@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Becca Foodies</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+    url("{{ url_for('static', filename='images/login-bg.jpg') }}");
+
+    background-size:cover;
+    background-position:center;
+
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.login-card{
+
+    width:430px;
+    max-width:95%;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+.logo{
+
+width:80px;
+height:80px;
+border-radius:50%;
+object-fit:cover;
+
+margin-bottom:15px;
+
+}
+
+h2{
+
+font-weight:bold;
+color:rgb(46,163,163);
+
+}
+
+.subtitle{
+
+color:#666;
+
+margin-bottom:25px;
+
+}
+
+.form-control{
+
+height:52px;
+
+border-radius:12px;
+
+}
+
+.btn-login{
+
+background:rgb(46,163,163);
+
+color:white;
+
+height:52px;
+
+font-size:18px;
+
+font-weight:bold;
+
+border:none;
+
+border-radius:12px;
+
+transition:.3s;
+
+}
+
+.btn-login:hover{
+
+background:#238b8b;
+
+transform:translateY(-2px);
+
+}
+
+.input-group-text{
+
+cursor:pointer;
+
+background:white;
+
+}
+
+.register-link{
+
+text-align:center;
+
+margin-top:20px;
+
+}
+
+.register-link a{
+
+text-decoration:none;
+
+color:rgb(46,163,163);
+
+font-weight:bold;
+
+}
+
+.register-link a:hover{
+
+text-decoration:underline;
+
+}
+
+.alert{
+
+border-radius:12px;
+
+animation:fadeUp .5s;
+
+}
+
+@media(max-width:576px){
+
+.login-card{
+
+padding:30px 22px;
+
+}
+
+h2{
+
+font-size:28px;
+
+}
+
+}
+
+    </style>
+
+</head>
+<body>
+
+<div class="login-card">
+
+<div class="text-center">
+
+<img src="{{ url_for('static', filename='images/food logo.jpeg') }}" class="logo">
+
+<h2>Welcome Back!</h2>
+
+<p class="subtitle">
+
+Login to save your favourite recipes.
+
+</p>
+
+</div>
+
+<!-- Flash Messages -->
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+{% for category,message in messages %}
+
+<div class="alert alert-{{ category }} alert-dismissible fade show">
+
+{{ message }}
+
+<button class="btn-close" data-bs-dismiss="alert"></button>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% endwith %}
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>Email Address</label>
+
+<input
+
+type="email"
+
+name="email"
+
+class="form-control"
+
+placeholder="Enter your email"
+
+required>
+
+</div>
+
+<div class="mb-4">
+
+<label>Password</label>
+
+<div class="input-group">
+
+<input
+
+type="password"
+
+id="password"
+
+name="password"
+
+class="form-control"
+
+placeholder="Enter your password"
+
+required>
+
+<span class="input-group-text"
+
+onclick="togglePassword()">
+
+👁
+
+</span>
+
+</div>
+
+<div class="text-end mb-3">
+
+    <a href="{{ url_for('forgot_password') }}">
+
+        Forgot Password?
+
+    </a>
+
+</div>
+
+</div>
+
+<button class="btn btn-login w-100">
+
+Login
+
+</button>
+
+</form>
+
+<div class="register-link">
+
+Don't have an account?
+
+<a href="{{ url_for('register') }}">
+
+Create one
+
+</a>
+
+</div>
+
+<div class="text-center mt-4">
+
+<a href="{{ url_for('home') }}"
+
+class="btn btn-outline-secondary">
+
+← Back Home
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+let input=document.getElementById("password");
+
+input.type=input.type==="password" ? "text":"password";
+
+}
+
+setTimeout(function(){
+
+document.querySelectorAll(".alert").forEach(function(alert){
+
+bootstrap.Alert.getOrCreateInstance(alert).close();
+
+});
+
+},4000);
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

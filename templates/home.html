@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Blog | Home</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+     background-image: url("{{ url_for('static', filename='images/background 2.png') }}");
+     background-size: cover;    
+     background-position: center;  
+     background-repeat: no-repeat; 
+     background-attachment: fixed; 
+    }
+    .navbar {
+      padding: 0.2rem;
+      background-color: rgb(46, 163, 163);
+    }
+        .navbar-brand{
+      font-weight: bold;
+      font-size: 30px;
+      color: black;
+      font-family: 'Times New Roman', Times, serif;
+      
+    }
+    .navbar-nav .nav-link {
+      border-radius: 15px;
+      color: #ffcc00;
+      font-size: 18px;
+      font-weight: bold;
+    }
+        .auth-buttons .btn{
+        margin-bottom: 8px;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: bold;
+        color:whitesmoke;
+    }
+    @media (max-width: 768px){
+
+    .navbar-left{
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .navbar-brand{
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .auth-buttons{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+        
+    }
+
+    .auth-buttons .btn{
+        width: 100%;
+        margin-bottom: 8px;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: bold;
+        color:whitesmoke;
+    }
+
+}
+    .hero-about {
+    background: linear-gradient(
+        135deg,
+        #e8fff8,
+        #ffffff,
+        #dffcff
+    );
+    padding: 80px 0;
+}
+
+.hero-content{
+    padding: 40px;
+}
+
+@media (max-width:768px){
+
+    .hero-content{
+        padding: 20px;
+    }
+
+    .hero-content h2{
+        font-size: 1.8rem;
+    }
+
+    .hero-content .lead{
+        font-size: 1rem;
+    }
+
+}
+.hero-content p {
+    color: rgb(46, 163, 163);
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 200;
+    line-height: 1.8;
+}
+
+.btn-explore {
+    background: linear-gradient(135deg, #00a896, #4ecdc4);
+    color: white;
+    padding: 12px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-explore:hover {
+    transform: translateY(-3px);
+    color: white;
+    box-shadow: 0 8px 20px rgba(0,168,150,0.3);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media(max-width:768px){
+
+    .about-section{
+        text-align:center;
+    }
+
+    .about-section img{
+        margin-top:20px;
+        max-height:250px;
+    }
+
+}
+.about-section {
+    background: #fffaf5;
+}
+
+.about-section h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.about-section p {
+    color: #555;
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+.about-section img {
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.about-section .btn {
+    padding: 10px 25px;
+    border-radius: 30px;
+    margin-top: 10px;
+}
+@media(max-width:768px){
+
+    .categories h2{
+        font-size:1.5rem;
+    }
+
+    .categories .btn{
+        font-size:1rem;
+        padding:10px;
+    }
+
+}
+    .categories h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      color:green;
+    }
+    .categories .btn {
+      background-color: #9ed841;
+      font-size: 1.2rem;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+/* Featured Recipes Section */
+.featured-recipes{
+    background: linear-gradient(
+        180deg,
+        #f8fffd,
+        #ffffff
+    );
+}
+
+/* Section Header */
+.section-header h2{
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #00897b;
+}
+
+.section-header p{
+    color: #666;
+    max-width: 700px;
+    margin: auto;
+}
+
+.section-badge{
+    display: inline-block;
+    background: rgba(0,168,150,.12);
+    color: #00a896;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Recipe Card */
+.recipe-card{
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all .3s ease;
+    background: #fff;
+    height: 100%;
+}
+
+.recipe-card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.1);
+}
+
+/* Image */
+.recipe-card img{
+    height:220px;
+}
+
+@media(max-width:768px){
+
+    .recipe-card img{
+        height:180px;
+    }
+
+}
+
+.recipe-card:hover img{
+    transform: scale(1.05);
+}
+
+/* Card Body */
+.recipe-card .card-body{
+    padding: 20px;
+}
+
+.recipe-card .card-title{
+    color: #00897b;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.recipe-card .card-text{
+    color: #666;
+    font-size: .95rem;
+    line-height: 1.6;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Button */
+.recipe-btn{
+    background: linear-gradient(
+        135deg,
+        #00a896,
+        #4ecdc4
+    );
+    color: white;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-weight: 600;
+    border: none;
+    transition: .3s ease;
+}
+
+.recipe-btn:hover{
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,168,150,.3);
+}
+.recipe-search{
+    width:50%;
+}
+
+@media(max-width:768px){
+    .recipe-search{
+        width:100%;
+    }
+}
+/* Blog Section */
+.latest-blogs{
+    background: #ffffff;
+}
+
+/* Blog Cards */
+@media(max-width:768px){
+
+    .blog-card img{
+        height:180px;
+    }
+
+}
+.blog-card{
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all .3s ease;
+  
+}
+
+.blog-card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.1);
+}
+
+/* Blog Image */
+.blog-card img{
+    height: 220px;
+    object-fit: cover;
+    transition: .4s ease;
+}
+
+.blog-card:hover img{
+    transform: scale(1.05);
+}
+
+/* Card Body */
+.blog-card .card-body{
+    padding: 20px;
+}
+
+/* Blog Date */
+.blog-meta{
+    color: #00a896;
+    font-size: .85rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Title */
+.blog-card .card-title{
+    color: #00897b;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+/* Content */
+.blog-card .card-text{
+    color: #666;
+    line-height: 1.7;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Button */
+.blog-btn{
+    background: transparent;
+    color: #00a896;
+    border: 2px solid #00a896;
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-weight: 600;
+    transition: .3s ease;
+}
+
+.blog-btn:hover{
+    background: #00a896;
+    color: white;
+}
+
+/* Optional Category Badge */
+.blog-category{
+    display: inline-block;
+    background: rgba(78,205,196,.15);
+    color: #00a896;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: .8rem;
+    margin-bottom: 10px;
+}
+
+@media(max-width:768px){
+
+    .section-header h2{
+        font-size:1.8rem;
+    }
+
+    .section-header p{
+        font-size:.95rem;
+        padding:0 10px;
+    }
+
+}
+    footer {
+      background: #333;
+      color: #fff;
+      padding: 30px 20px;
+      margin-top: 40px;
+    }
+    footer a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    /* MOBILE RESPONSIVENESS */
+
+@media (max-width:768px){
+
+    .hero h1{
+        font-size:2rem;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+
+    .navbar-brand{
+        font-size:1.3rem;
+    }
+
+    .recipe-card img,
+    .blog-card img{
+        height:180px;
+    }
+
+    .card-title{
+        font-size:1.1rem;
+    }
+
+    .card-text{
+        font-size:0.95rem;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+    footer{
+        text-align:center;
+    }
+
+}
+
+/* MOBILE OPTIMIZATION */
+
+@media(max-width:768px){
+
+    html,body{
+        overflow-x:hidden;
+    }
+
+    .container{
+        padding-left:15px;
+        padding-right:15px;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+    .hero-content,
+    .recipe-card,
+    .blog-card{
+        border-radius:15px;
+    }
+
+}
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <div class="navbar-left">
+      <img src="{{ url_for('static', filename='images/food logo.jpeg') }}" alt="Logo" width="40" height="40" class="me-2 rounded-circle">
+      <a class="navbar-brand" href="{{ url_for('home') }}">Becca Foodies</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+          <div class="auth-buttons">
+      <a href="{{ url_for('login') }}" class="btn btn-login"><i class='bxr  bx-user'    ></i> Login</a>
+      <a href="{{ url_for('register') }}" class="btn btn-register"><i class='bxr  bx-user-plus'    ></i> Register</a>
+     
+
+    </div>
+
+    </div>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          
+          <li class="nav-item"><a class="nav-link active mx-3" href="{{ url_for('home') }}"><i class='bx bx-home'></i> Home</a></li>
+           <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('about') }}"><i class='bx bx-info-octagon'></i> About</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('recipes') }}"><i class='bx bx-cookie'></i> Recipes</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('blog') }}"><i class='bx bx-article'></i> Blog</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('saved_recipes') }}"><i class='bx bx-cookie'></i>Saved Recipes</a></li>
+          
+  
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero-about py-5">
+    <div class="container text-center">
+        <div class="hero-content">
+            <h2 class="mb-4"> Welcome to Becca's Food Paradise </h2>
+
+            <p class="lead">
+                Discover a world of delicious recipes, healthy meal ideas
+                and culinary inspiration designed for every food lover.
+                From traditional Kenyan cuisine to modern healthy dishes,
+                we bring you easy-to-follow recipes that make cooking fun,
+                nutritious and enjoyable.
+            </p>
+
+            <p>
+                Whether you're searching for a quick breakfast, a hearty family
+                dinner, healthy weight-loss meals or tasty desserts, you'll
+                find something to inspire your next meal. Explore our growing
+                collection of recipes and start your culinary journey today.
+            </p>
+
+            <div class="mt-4">
+                <a href="{{ url_for('recipes') }}" class="btn btn-explore">
+                    Explore Recipes
+                </a>
+            </div>
+        </div>
+    </div>
+          <form class="d-flex justify-content-center flex-column flex-md-row mt-4" onsubmit="event.preventDefault(); searchRecipes();">
+  <input class="form-control recipe-search" type="search" placeholder="Search recipes by keyword or ingredient..." onkeyup="searchRecipes()" aria-label="Search">
+  <button type="button" onclick="searchRecipes()" class="btn btn-warning ms-2">Search</button>
+</form>
+</section>
+
+<section class="about-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2>About Our Food Blog</h2>
+                <p>
+                    Welcome to our food blog, your go-to destination for delicious recipes,
+                    healthy eating ideas, and culinary inspiration. Whether you're looking
+                    for traditional Kenyan dishes, quick family meals, healthy recipes, or
+                    tasty desserts, you'll find something to satisfy your cravings.
+                </p>
+
+                <p>
+                    Our mission is to make cooking enjoyable and accessible for everyone by
+                    sharing easy-to-follow recipes, cooking tips, and nutrition insights.
+                    Join us on a journey of discovering new flavors and creating memorable
+                    meals for every occasion.
+                </p>
+
+                <a href="{{ url_for('recipes') }}" class="btn btn-success">
+                    Explore Recipes
+                </a>
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <img src="{{ url_for('static', filename='images/about_food.png') }}"
+                     alt="Food Blog"
+                     class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <!-- Categories -->
+<!-- Categories -->
+<section class="container py-1">
+  <div class="categories">
+    <h2 class="text-center mb-4">Explore Foods by Categories</h2>
+    <div class="row text-center">
+      {% for category in categories %}
+        <div class="col-md-2 col-6 mb-3">
+          <a href="{{ url_for('recipes_by_category', category_id=category.id) }}" 
+             class="btn btn-outline-dark w-100">
+            {{ category.name }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+ <section class="featured-recipes py-5">
+    <div class="container">
+
+        <div class="section-header text-center mb-5">
+            <span class="section-badge">🍴 Featured Recipes</span>
+            <h2>Discover Delicious Recipes</h2>
+            <p>
+                Explore our handpicked collection of tasty, healthy, and easy-to-follow recipes
+                for every occasion.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            {% for recipe in featured_recipes %}
+            <div class="col-lg-4 col-md-6">
+
+                <div class="card recipe-card shadow-sm">
+
+                    {% if recipe.image %}
+                    <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}"
+                         class="card-img-top"
+                         alt="{{ recipe.title }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default.png') }}"
+                         class="card-img-top"
+                         alt="No Image">
+                    {% endif %}
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            {{ recipe.title }}
+                        </h5>
+
+                        <p class="card-text">
+                            {{ recipe.description[:100] }}{% if recipe.description|length > 100 %}...{% endif %}
+                        </p>
+
+                        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}"
+                           class="btn recipe-btn">
+                            View Recipe →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+  <!-- Blog Section -->
+ 
+  <section class="latest-blogs py-5">
+    <div class="container">
+
+        <div class="section-header text-center mb-5">
+            <span class="section-badge">📝 Food Blog</span>
+            <h2>Latest Articles & Food Tips</h2>
+            <p>
+                Stay inspired with healthy eating tips, cooking guides,
+                nutrition advice, and delicious food stories.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+    {% for blog in latest_blogs %}
+    <div class="col-lg-4 col-md-6 col-12 mb-4 blog-item">
+
+        <div class="card blog-card shadow-sm">
+
+                    {% if blog.image %}
+                    <img src="{{ url_for('static', filename='images/' ~ blog.image) }}"
+                         class="card-img-top"
+                         alt="{{ blog.title }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default-blog.jpg') }}"
+                         class="card-img-top"
+                         alt="Blog Image">
+                    {% endif %}
+
+                    <div class="card-body">
+
+                        <div class="blog-meta">
+                            📅 {{ blog.date_posted.strftime('%d %b %Y') }}
+                        </div>
+
+                        <h5 class="card-title">
+                            {{ blog.title }}
+                        </h5>
+
+                       <p class="card-text">
+    {{ blog.content|striptags|truncate(120) }}
+</p>
+                        <a href="{{ url_for('single_post', post_id=blog.id) }}" class="btn btn-sm btn-secondary">Read More</a>
+                          
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <p>&copy; 2025 My Food Blog | All rights reserved.</p>
+
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+let searchTimeout;
+let originalHomepageRecipesHTML = ""; // store homepage recipes for reset
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector(".featured-recipes .row");
+  if (container) {
+    // Save the original homepage recipes
+    originalHomepageRecipesHTML = container.innerHTML;
+  }
+});
+
+function searchRecipes() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const input = document.querySelector('.form-control[type="search"]');
+    const filter = input.value.trim().toLowerCase();
+    const container = document.querySelector(".featured-recipes .row");
+
+    // If search box is empty — restore homepage recipes only
+    if (filter === "") {
+      container.innerHTML = originalHomepageRecipesHTML;
+
+      let status = document.getElementById('search-status');
+      if (status) status.textContent = "";
+      return;
+    }
+
+    // Otherwise — fetch results from database
+    fetch(`/search_recipes?q=${encodeURIComponent(filter)}`)
+      .then(response => response.json())
+      .then(recipes => {
+        container.innerHTML = ''; // Clear old results
+
+        if (recipes.length > 0) {
+          recipes.forEach(recipe => {
+            const card = document.createElement('div');
+            card.className = 'col-md-4';
+            card.innerHTML = `
+              <div class="card recipe-card mb-4">
+                <img src="${recipe.image ? '/static/images/' + recipe.image : '/static/images/default.png'}"
+                     class="card-img-top" alt="${recipe.title}" style="height:300px; object-fit:cover;">
+                <div class="card-body">
+                  <h5 class="card-title">${recipe.title}</h5>
+                  <p class="card-text">${recipe.description ? recipe.description.substring(0, 100) + '...' : ''}</p>
+                  <a href="/recipe/${recipe.id}" class="btn btn-sm btn-primary">View Recipe</a>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = '<p class="text-center mt-3">No recipes matched your search.</p>';
+        }
+      })
+      .catch(err => console.error("Error searching recipes:", err));
+  }, 400);
+}
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Becca Foodies</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+    url("{{ url_for('static', filename='images/register-bg.jpg') }}");
+
+    background-size:cover;
+    background-position:center;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+.register-card{
+
+    width:470px;
+    max-width:95%;
+
+    background:rgba(255,255,255,.93);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+.logo{
+
+width:85px;
+height:85px;
+
+border-radius:50%;
+
+margin-bottom:15px;
+
+object-fit:cover;
+
+}
+
+h2{
+
+color:rgb(46,163,163);
+
+font-weight:bold;
+
+}
+
+.subtitle{
+
+color:#666;
+
+margin-bottom:25px;
+
+}
+
+.form-control{
+
+height:52px;
+
+border-radius:12px;
+
+}
+
+.btn-register{
+
+background:rgb(46,163,163);
+
+color:white;
+
+font-weight:bold;
+
+height:52px;
+
+border:none;
+
+border-radius:12px;
+
+transition:.3s;
+
+}
+
+.btn-register:hover{
+
+background:#238b8b;
+
+transform:translateY(-2px);
+
+}
+
+.input-group-text{
+
+cursor:pointer;
+
+background:white;
+
+}
+
+.login-link{
+
+margin-top:20px;
+
+text-align:center;
+
+}
+
+.login-link a{
+
+text-decoration:none;
+
+font-weight:bold;
+
+color:rgb(46,163,163);
+
+}
+
+.login-link a:hover{
+
+text-decoration:underline;
+
+}
+
+.password-hint{
+
+font-size:14px;
+
+color:#777;
+
+margin-top:5px;
+
+}
+
+.alert{
+
+border-radius:12px;
+
+animation:fadeUp .5s;
+
+}
+
+@media(max-width:576px){
+
+.register-card{
+
+padding:30px 22px;
+
+}
+
+h2{
+
+font-size:28px;
+
+}
+
+}
+
+    </style>
+
+</head>
+<body>
+
+<div class="register-card">
+
+<div class="text-center">
+
+<img src="{{ url_for('static', filename='images/food logo.jpeg') }}" class="logo">
+
+<h2>Create Account</h2>
+
+<p class="subtitle">
+
+Join Becca Foodies and save your favourite recipes ❤️
+
+</p>
+
+</div>
+
+<!-- Flash Messages -->
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+{% for category,message in messages %}
+
+<div class="alert alert-{{ category }} alert-dismissible fade show">
+
+{{ message }}
+
+<button class="btn-close" data-bs-dismiss="alert"></button>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% endwith %}
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>Username</label>
+
+<input
+
+type="text"
+
+name="username"
+
+class="form-control"
+
+placeholder="Choose a username"
+
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Email Address</label>
+
+<input
+
+type="email"
+
+name="email"
+
+class="form-control"
+
+placeholder="Enter your email"
+
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Password</label>
+
+<div class="input-group">
+
+<input
+
+type="password"
+
+id="password"
+
+name="password"
+
+class="form-control"
+
+placeholder="Create a password"
+
+required>
+
+<span class="input-group-text"
+
+onclick="togglePassword('password')">
+
+👁
+
+</span>
+
+</div>
+
+<div class="password-hint">
+
+Minimum 8 characters recommended.
+
+</div>
+
+</div>
+
+<div class="mb-4">
+
+<label>Confirm Password</label>
+
+<div class="input-group">
+
+<input
+
+type="password"
+
+id="confirmPassword"
+
+name="confirm_password"
+
+class="form-control"
+
+placeholder="Confirm password"
+
+required>
+
+<span class="input-group-text"
+
+onclick="togglePassword('confirmPassword')">
+
+👁
+
+</span>
+
+</div>
+
+</div>
+
+<button class="btn btn-register w-100">
+
+Create Account
+
+</button>
+
+</form>
+
+<div class="login-link">
+
+Already have an account?
+
+<a href="{{ url_for('login') }}">
+
+Login
+
+</a>
+
+</div>
+
+<div class="text-center mt-4">
+
+<a href="{{ url_for('home') }}"
+
+class="btn btn-outline-secondary">
+
+← Back Home
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(id){
+
+let input=document.getElementById(id);
+
+input.type=input.type==="password" ? "text":"password";
+
+}
+
+setTimeout(function(){
+
+document.querySelectorAll(".alert").forEach(function(alert){
+
+bootstrap.Alert.getOrCreateInstance(alert).close();
+
+});
+
+},4000);
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

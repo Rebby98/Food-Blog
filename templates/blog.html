@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | My Food Blog</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f9f9f9;
+    overflow-x:hidden;
+}
+
+/* NAVBAR */
+
+.navbar{
+    padding:12px 0;
+    background:rgb(46,163,163);
+}
+
+.navbar-brand{
+    font-size:2rem;
+    font-weight:bold;
+    color:black;
+    font-family:Georgia, serif;
+}
+
+.navbar-brand:hover{
+    color:white;
+}
+
+.navbar-nav .nav-link{
+    color:#ffcc00;
+    font-size:18px;
+    font-weight:bold;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.navbar-nav .nav-link:hover{
+    background:white;
+    color:rgb(46,163,163);
+}
+
+.navbar-toggler{
+    border:none;
+}
+
+.navbar-toggler:focus{
+    box-shadow:none;
+}
+
+
+/* HERO */
+
+.hero{
+
+padding:70px 0;
+
+background:white;
+
+}
+
+.hero h1{
+
+display:block;
+
+text-align:center;
+
+font-size:3rem;
+
+line-height:1.3;
+
+margin-bottom:30px;
+
+}
+
+.hero p{
+
+font-size:1.15rem;
+
+line-height:1.9;
+
+max-width:900px;
+
+margin:auto;
+
+text-align:center;
+
+color:#555;
+
+}
+
+/* SEARCH */
+
+#searchInput{
+    height:50px;
+    border-radius:30px;
+    padding-left:20px;
+}
+
+
+/* CATEGORY BADGES */
+
+.category-badge{
+    margin:4px;
+    font-size:.9rem;
+    padding:8px 15px;
+    border-radius:20px;
+}
+
+
+/* BLOG CARD */
+
+.blog-grid{
+margin-top:20px;
+}
+
+.blog-page-card{
+
+border:none;
+border-radius:18px;
+overflow:hidden;
+transition:.35s;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.blog-page-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 40px rgba(0,0,0,.18);
+
+}
+
+.blog-page-card img{
+
+height:240px;
+
+width:100%;
+
+object-fit:cover;
+
+transition:.4s;
+
+}
+
+.blog-page-card:hover img{
+
+transform:scale(1.05);
+
+}
+
+.blog-page-card .card-body{
+
+padding:25px;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.blog-page-card h5{
+
+font-weight:bold;
+
+font-size:1.35rem;
+
+color:#0b666a;
+
+margin-bottom:15px;
+
+line-height:1.4;
+
+}
+
+.blog-page-card p{
+
+flex-grow:1;
+
+color:#666;
+
+font-size:15px;
+
+line-height:1.7;
+
+}
+
+.blog-page-card .badge{
+
+font-size:13px;
+
+padding:8px 14px;
+
+border-radius:20px;
+
+}
+
+.blog-page-card .btn{
+
+border-radius:30px;
+
+font-weight:bold;
+
+padding:12px;
+
+transition:.3s;
+
+}
+
+.blog-page-card .btn:hover{
+
+background:#0b666a;
+
+color:white;
+
+}
+
+@keyframes fadeUp{
+
+from{
+    opacity:0;
+    transform:translateY(25px);
+}
+
+to{
+    opacity:1;
+    transform:translateY(0);
+}
+
+}
+
+
+/* FOOTER */
+
+footer{
+    margin-top:80px;
+}
+
+
+/* MOBILE */
+@media(max-width:768px){
+
+.hero{
+
+padding:45px 20px;
+
+}
+
+.hero h1{
+
+font-size:2rem;
+
+}
+
+.hero p{
+
+font-size:16px;
+
+text-align:left;
+
+}
+
+.navbar-brand{
+
+font-size:26px;
+
+}
+
+.blog-page-card img{
+
+height:220px;
+
+}
+
+.blog-page-card{
+
+margin-bottom:10px;
+
+}
+
+.category-badge{
+
+display:inline-block;
+
+margin-bottom:10px;
+
+}
+
+}
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <img src="{{ url_for('static', filename='images/food logo.jpeg') }}" alt="Logo" width="40" height="40" class="me-2 rounded-circle">
+      <a class="navbar-brand" href="#">Becca Foodies</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('home') }}"><i class='bx bx-home'></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('recipes') }}"><i class='bx bx-cookie'></i> Recipes</a></li>
+          <li class="nav-item"><a class="nav-link active mx-3" href="{{ url_for('blog') }}"><i class='bx bx-article'></i> Blog</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('about') }}"><i class='bx bx-info-octagon'></i> About</a></li>
+          <li class="nav-item"><a class="nav-link mx-3" href="{{ url_for('saved_recipes') }}"><i class='bx bx-cookie'></i>Saved Recipes</a></li>
+
+          
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+<section class="hero">
+    <div class="container text-center">
+      <h1>Every Meal Has a Story Worth Sharing</h1>
+      <p>
+        Welcome to the <strong>Becca Foodies Blog</strong>, your home for inspiring food stories, healthy living tips, culinary traditions, and the latest food trends. We go beyond recipes to explore the people, cultures, and experiences that make every dish unique.
+      </p>
+      <p>
+        From authentic Kenyan cuisine and African food heritage to global flavors, nutrition insights, and practical kitchen advice, our articles are designed to educate, inspire, and help you enjoy every bite with confidence.
+      </p>
+    </div>
+  </section>
+
+<!-- Search & Categories --> 
+ <section class="container my-5"> 
+  <div class="row mb-4"> 
+    <div class="col-lg-8 col-md-7 mb-3"> 
+      <!-- Live Search --> 
+           <input
+        type="text"
+        id="searchInput"
+        class="form-control me-2"
+        placeholder="Search blogs by keyword or topic..."
+    >
+      </div> 
+      <div class="col-lg-4 col-md-5 text-center text-md-end"> 
+        <div> 
+          <span class="badge bg-primary category-badge">Food Culture</span> 
+          <span class="badge bg-success category-badge">Lifestyle</span> 
+          <span class="badge bg-danger category-badge">Trending</span> 
+          <span class="badge bg-success category-badge">Seasonal</span> 
+          <span class="badge bg-primary category-badge">Weight Loss</span> 
+          <span class="badge bg-danger category-badge">Weight Gain</span> 
+        </div> 
+      </div> 
+    </div> 
+    <!-- No Results Message --> 
+     <p id="noResults" class="text-center text-muted fs-5" style="display:none;"> No blogs found matching your search. </p> 
+     <!-- Blog Posts Grid --> 
+      <div class="row blog-grid">
+
+{% for blog in blogs %}
+
+<div class="col-lg-4 col-md-6 col-12 mb-4 blog-item">
+
+    <div
+        class="card blog-page-card h-100 shadow-sm"
+
+        data-title="{{ blog.title|lower }}"
+        data-content="{{ blog.content|striptags|lower }}"
+        data-category="{{ (blog.category or 'general')|lower }}">
+
+        {% if blog.image %}
+        <img src="{{ url_for('static', filename='images/' ~ blog.image) }}"
+             class="blog-page-image card-img-top"
+             alt="{{ blog.title }}">
+        {% else %}
+        <img src="{{ url_for('static', filename='images/default_blog.jpg') }}"
+             class="card-img-top"
+             alt="Blog Image">
+        {% endif %}
+
+        <div class="card-body d-flex flex-column">
+
+            <span class="badge bg-success mb-2 align-self-start">
+                {{ blog.category or "General" }}
+            </span>
+
+            <h5 class="card-title">
+                {{ blog.title }}
+            </h5>
+
+            <p class="card-text">
+                {{ blog.content[:130]|striptags|safe }}...
+            </p>
+
+            <div class="mt-auto">
+
+                <a href="{{ url_for('single_post', post_id=blog.id) }}"
+                   class="btn btn-warning w-100">
+
+                    Read Full Article →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="col-12">
+
+<h3 class="text-center text-muted">
+
+No blogs available yet.
+
+</h3>
+
+</div>
+
+{% endfor %}
+
+</div>
+</section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <p>&copy; 2025 My Food Blog | All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+ <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("searchInput");
+    const blogItems = document.querySelectorAll(".blog-item");
+    const noResults = document.getElementById("noResults");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keyup", function () {
+
+        const searchTerm = this.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        blogItems.forEach(item => {
+
+            // Look for the correct card class
+            const card = item.querySelector(".blog-page-card");
+
+            if (!card) return;
+
+            const title = card.dataset.title || "";
+            const content = card.dataset.content || "";
+            const category = card.dataset.category || "";
+
+            if (
+                title.includes(searchTerm) ||
+                content.includes(searchTerm) ||
+                category.includes(searchTerm)
+            ) {
+                item.style.display = "";
+                visibleCount++;
+            } else {
+                item.style.display = "none";
+            }
+
+        });
+
+        if (noResults) {
+            noResults.style.display = visibleCount === 0 ? "block" : "none";
+        }
+
+    });
+
+});
+</script>
+</body>
+</html>
