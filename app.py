@@ -18,18 +18,28 @@ from itsdangerous import URLSafeTimedSerializer
 
 
 app = Flask(__name__)
-app.secret_key = "becca.2029"
+import os
 
-# SQLite database setup
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///foodblog.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SECRET_KEY"] = os.environ.get(
+    "SECRET_KEY",
+    "becca.2029"
+)
+
+app.secret_key = app.config["SECRET_KEY"]
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    "DATABASE_URL",
+    "sqlite:///foodblog.db"
+)
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = "beccafoodies@gmail.com"
-app.config["MAIL_PASSWORD"] = "zmuzdjjyhrqotyhw"
-app.config["MAIL_DEFAULT_SENDER"] = "beccafoodies@gmail.com"
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_USERNAME")
 
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
