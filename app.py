@@ -717,6 +717,7 @@ def reset_password(token):
 
     return render_template("reset_password.html", token=token)
 
+
 @app.route('/admin/add_recipe', methods=['GET', 'POST'])
 def add_recipe():
     if request.method == 'POST':
@@ -726,22 +727,21 @@ def add_recipe():
             ingredients = request.form.get('ingredients')
             instructions = request.form.get('instructions')
             cuisine = request.form.get('cuisine')
-            category_id = request.form.get('category_id')    # ✅ safe fallback
+            category_id = request.form.get('category_id')
             diet_type = request.form.get('diet_type')
             prep_time = request.form.get('prep_time')
 
-            category_id = request.form.get('category_id')
+            image_url = None
 
-            # Handle image upload
             image = request.files.get("image")
 
             if image and image.filename:
-              result = cloudinary.uploader.upload(
-        image,
-        folder="beccafoodies/recipes"
-            )
-            image_url = result["secure_url"]
-            # Save to DB
+                result = cloudinary.uploader.upload(
+                    image,
+                    folder="beccafoodies/recipes"
+                )
+                image_url = result["secure_url"]
+
             new_recipe = Recipe(
                 title=title,
                 description=description,
@@ -753,19 +753,20 @@ def add_recipe():
                 prep_time=prep_time,
                 image=image_url
             )
+
             db.session.add(new_recipe)
             db.session.commit()
 
             flash("Recipe added successfully!", "success")
-            return redirect(url_for('manage_recipes'))  # or wherever you list recipes
+            return redirect(url_for("manage_recipes"))
 
         except Exception as e:
+            db.session.rollback()
+            print(e)
             flash(f"Error adding recipe: {e}", "danger")
-            return redirect(url_for('add_recipe'))
 
     categories = Category.query.all()
-    return render_template('admin/add_recipe.html', categories=categories)
-
+    return render_template("admin/add_recipe.html", categories=categories)
 
 @app.route('/check')
 def check():
@@ -784,61 +785,75 @@ def manage_recipes():
 @app.route('/admin/add_blog', methods=['GET', 'POST'])
 def add_blog():
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        author = "Admin"  # or from a login system later
+        try:
+            title = request.form.get('title')
+            content = request.form.get('content')
+            category = request.form.get('category')
 
-        # Handle file upload
-        image = request.files.get("image")
+            image_url = None
 
-        if image and image.filename:
-          result = cloudinary.uploader.upload(
-        image,
-        folder="beccafoodies/blogs"
-     )
+            image = request.files.get("image")
 
-        image_url = result["secure_url"]
+            if image and image.filename:
+                result = cloudinary.uploader.upload(
+                    image,
+                    folder="beccafoodies/blogs"
+                )
+                image_url = result["secure_url"]
 
-        # If you added category to your model
-        category = request.form.get('category', None)
+            new_blog = Blog(
+                title=title,
+                content=content,
+                author="Becca",
+                category=category,
+                image=image_url
+            )
 
-        new_blog = Blog(
-            title=title,
-            content=content,
-            image=image_url,
-            category=category  # only if you added it to model
-        )
+            db.session.add(new_blog)
+            db.session.commit()
 
-        db.session.add(new_blog)
-        db.session.commit()
-        flash("Blog added successfully!", "success")
-        return redirect(url_for('manage_blogs'))
+            flash("Blog added successfully!", "success")
+            return redirect(url_for("manage_blogs"))
 
-    return render_template('admin/add_blog.html')
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+            flash(f"Error adding blog: {e}", "danger")
+
+    return render_template("admin/add_blog.html")
 
 @app.route('/admin/edit_blog/<int:blog_id>', methods=['GET', 'POST'])
 def edit_blog(blog_id):
     blog = Blog.query.get_or_404(blog_id)
+
     if request.method == 'POST':
-        blog.title = request.form['title']
-        blog.content = request.form['content']
-        blog.category = request.form['category']
-        # handle image if needed
+        try:
+            blog.title = request.form.get('title')
+            blog.content = request.form.get('content')
+            blog.category = request.form.get('category')
 
-        image = request.files.get("image")
+            image = request.files.get("image")
 
-        if image and image.filename:
-          result = cloudinary.uploader.upload(
-        image,
-        folder="beccafoodies/recipes"
-         )
+            # Upload a new image only if one was selected
+            if image and image.filename:
+                result = cloudinary.uploader.upload(
+                    image,
+                    folder="beccafoodies/blogs"
+                )
 
-        image_url = result["secure_url"]
+                blog.image = result["secure_url"]
 
-        db.session.commit()
-        flash("Blog updated successfully!", "success")
-        return redirect(url_for('manage_blogs'))
-    return render_template('admin/edit_blog.html', blog=blog)
+            db.session.commit()
+
+            flash("Blog updated successfully!", "success")
+            return redirect(url_for("manage_blogs"))
+
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+            flash(f"Error updating blog: {e}", "danger")
+
+    return render_template("admin/edit_blog.html", blog=blog)
 
 @app.route('/admin/delete_blog/<int:blog_id>', methods=['POST'])
 def delete_blog(blog_id):
