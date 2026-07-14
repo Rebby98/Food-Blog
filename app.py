@@ -12,6 +12,16 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+    secure=True
+)
 
 
 from dotenv import load_dotenv
@@ -721,12 +731,11 @@ def add_recipe():
             category_id = request.form.get('category_id')
 
             # Handle image upload
-            image = request.files.get('image')
-            image_filename = None
-            if image and image.filename != '':
-                image_filename = image.filename
-                image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+            image = request.files['image']
 
+            upload_result = cloudinary.uploader.upload(image)
+
+            image_url = upload_result["secure_url"]
             # Save to DB
             new_recipe = Recipe(
                 title=title,
@@ -737,7 +746,7 @@ def add_recipe():
                 category_id=category_id,
                 diet_type=diet_type,
                 prep_time=prep_time,
-                image=image_filename
+                image=image_url
             )
             db.session.add(new_recipe)
             db.session.commit()
@@ -775,13 +784,11 @@ def add_blog():
         author = "Admin"  # or from a login system later
 
         # Handle file upload
-        image_file = request.files['image']
-        image = None
-        if image_file and image_file.filename != '':
-            filename = secure_filename(image_file.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            image_file.save(image_path)
-            image = filename
+        image = request.files['image']
+
+        upload_result = cloudinary.uploader.upload(image)
+
+        image_url = upload_result["secure_url"]
 
         # If you added category to your model
         category = request.form.get('category', None)

@@ -375,15 +375,12 @@ margin-bottom:10px;
         data-content="{{ blog.content|striptags|lower }}"
         data-category="{{ (blog.category or 'general')|lower }}">
 
-        {% if blog.image %}
-        <img src="{{ url_for('static', filename='images/' ~ blog.image) }}"
-             class="blog-page-image card-img-top"
-             alt="{{ blog.title }}">
-        {% else %}
-        <img src="{{ url_for('static', filename='images/default_blog.jpg') }}"
-             class="card-img-top"
-             alt="Blog Image">
-        {% endif %}
+{% if blog.image.startswith('http') %}
+    <img src="{{ blog.image }}" alt="{{ blog.title }}">
+{% else %}
+    <img src="{{ url_for('static', filename='images/' + blog.image) }}"
+         alt="{{ blog.title }}">
+{% endif %}
 
         <div class="card-body d-flex flex-column">
 

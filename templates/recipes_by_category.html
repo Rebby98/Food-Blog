@@ -53,7 +53,7 @@
       <div class="col-md-4">
         <div class="card recipe-card h-100">
           {% if recipe.image %}
-          <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
+          <img src="{{(recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
           {% else %}
           <img src="https://via.placeholder.com/400x250.png?text=Recipe+Image" class="card-img-top" alt="Placeholder">
           {% endif %}

@@ -694,15 +694,12 @@
 
         <div class="card blog-card shadow-sm">
 
-                    {% if blog.image %}
-                    <img src="{{ url_for('static', filename='images/' ~ blog.image) }}"
-                         class="card-img-top"
-                         alt="{{ blog.title }}">
-                    {% else %}
-                    <img src="{{ url_for('static', filename='images/default-blog.jpg') }}"
-                         class="card-img-top"
-                         alt="Blog Image">
-                    {% endif %}
+                  {% if blog.image.startswith('http') %}
+    <img src="{{ blog.image }}" alt="{{ blog.title }}">
+{% else %}
+    <img src="{{ url_for('static', filename='images/' + blog.image) }}"
+         alt="{{ blog.title }}">
+{% endif %}
 
                     <div class="card-body">
 
