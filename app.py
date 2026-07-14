@@ -14,9 +14,11 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
+from dotenv import load_dotenv
+load_dotenv()
+
 import cloudinary
 import cloudinary.uploader
-import cloudinary.api
 
 cloudinary.config(
     cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
@@ -26,12 +28,8 @@ cloudinary.config(
 )
 print("Cloud:", os.getenv("CLOUDINARY_CLOUD_NAME"))
 print("Key:", os.getenv("CLOUDINARY_API_KEY"))
-print("Secret:", bool(os.getenv("CLOUDINARY_API_SECRET")))
+print("Secret loaded:", os.getenv("CLOUDINARY_API_SECRET") is not None)
 
-from dotenv import load_dotenv
-
-
-load_dotenv()
 
 
 
