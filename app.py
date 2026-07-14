@@ -794,7 +794,7 @@ def add_blog():
         if image and image.filename:
           result = cloudinary.uploader.upload(
         image,
-        folder="beccafoodies/recipes"
+        folder="beccafoodies/blogs"
      )
 
         image_url = result["secure_url"]
