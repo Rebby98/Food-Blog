@@ -136,11 +136,11 @@
                data-time="{{ recipe.prep_time|lower }}">
             <div class="card recipe-card">
               <!-- ✅ dynamic recipe image -->
-             {% if blog.image.startswith('http') %}
-    <img src="{{ blog.image }}" alt="{{ blog.title }}">
+             {% if recipe.image.startswith('http') %}
+    <img src="{{ recipe.image }}" alt="{{ recipe.title }}">
 {% else %}
-    <img src="{{ url_for('static', filename='images/' + blog.image) }}"
-         alt="{{ blog.title }}">
+    <img src="{{ url_for('static', filename='images/' + recipe.image) }}"
+         alt="{{ recipe.title }}">
 {% endif %}
 
               <div class="card-body">

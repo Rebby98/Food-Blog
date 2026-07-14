@@ -1,4 +1,6 @@
 
+from unittest import result
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -22,7 +24,9 @@ cloudinary.config(
     api_secret=os.getenv("CLOUDINARY_API_SECRET"),
     secure=True
 )
-
+print("Cloud:", os.getenv("CLOUDINARY_CLOUD_NAME"))
+print("Key:", os.getenv("CLOUDINARY_API_KEY"))
+print("Secret:", bool(os.getenv("CLOUDINARY_API_SECRET")))
 
 from dotenv import load_dotenv
 
@@ -731,11 +735,14 @@ def add_recipe():
             category_id = request.form.get('category_id')
 
             # Handle image upload
-            image = request.files['image']
+            image = request.files.get("image")
 
-            upload_result = cloudinary.uploader.upload(image)
-
-            image_url = upload_result["secure_url"]
+            if image and image.filename:
+              result = cloudinary.uploader.upload(
+        image,
+        folder="beccafoodies/recipes"
+            )
+            image_url = result["secure_url"]
             # Save to DB
             new_recipe = Recipe(
                 title=title,
@@ -784,11 +791,15 @@ def add_blog():
         author = "Admin"  # or from a login system later
 
         # Handle file upload
-        image = request.files['image']
+        image = request.files.get("image")
 
-        upload_result = cloudinary.uploader.upload(image)
+        if image and image.filename:
+          result = cloudinary.uploader.upload(
+        image,
+        folder="beccafoodies/recipes"
+     )
 
-        image_url = upload_result["secure_url"]
+        image_url = result["secure_url"]
 
         # If you added category to your model
         category = request.form.get('category', None)
@@ -796,7 +807,7 @@ def add_blog():
         new_blog = Blog(
             title=title,
             content=content,
-            image=image,
+            image=image_url,
             category=category  # only if you added it to model
         )
 
@@ -815,6 +826,17 @@ def edit_blog(blog_id):
         blog.content = request.form['content']
         blog.category = request.form['category']
         # handle image if needed
+
+        image = request.files.get("image")
+
+        if image and image.filename:
+          result = cloudinary.uploader.upload(
+        image,
+        folder="beccafoodies/recipes"
+         )
+
+        image_url = result["secure_url"]
+
         db.session.commit()
         flash("Blog updated successfully!", "success")
         return redirect(url_for('manage_blogs'))
@@ -848,11 +870,15 @@ def edit_recipe(recipe_id):
         recipe.category_id = int(request.form['category_id'])
 
         # ✅ handle image update
-        image = request.files.get('image')
-        if image and image.filename != '':
-            image_filename = image.filename
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
-            recipe.image = image_filename
+        image = request.files.get("image")
+
+        if image and image.filename:
+           result = cloudinary.uploader.upload(
+        image,
+        folder="beccafoodies/recipes"
+        )
+
+        image_url = result["secure_url"]
 
         db.session.commit()
         flash("Recipe updated successfully!", "success")
