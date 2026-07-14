@@ -52,11 +52,17 @@
       {% for recipe in recipes %}
       <div class="col-md-4">
         <div class="card recipe-card h-100">
-          {% if recipe.image %}
-          <img src="{{(recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
-          {% else %}
-          <img src="https://via.placeholder.com/400x250.png?text=Recipe+Image" class="card-img-top" alt="Placeholder">
-          {% endif %}
+<td>
+{% if recipe.image %}
+    {% if recipe.image.startswith('http') %}
+        <img src="{{ recipe.image }}" class="recipe-img" alt="{{ recipe.title }}">
+    {% else %}
+        <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}"
+             class="recipe-img"
+             alt="{{ recipe.title }}">
+    {% endif %}
+{% endif %}
+</td>
           <div class="card-body">
             <h5 class="card-title">{{ recipe.title if recipe.title else recipe }}</h5>
             <p class="card-text text-muted">

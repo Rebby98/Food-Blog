@@ -103,7 +103,17 @@
 
   <!-- Recipe Hero -->
   <section class="container my-5 recipe-hero text-center">
-    <img src="{{recipe.image }}" alt="{{ recipe.title }}" class="img-fluid rounded shadow">
+    <td>
+{% if recipe.image %}
+    {% if recipe.image.startswith('http') %}
+        <img src="{{ recipe.image }}" class="recipe-img" alt="{{ recipe.title }}">
+    {% else %}
+        <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}"
+             class="recipe-img"
+             alt="{{ recipe.title }}">
+    {% endif %}
+{% endif %}
+</td>
     <h1 class="mt-4 fw-bold">{{ recipe.title }}</h1>
     <p class="text-muted">{{ recipe.description }}</p>
     <div class="mt-2">
