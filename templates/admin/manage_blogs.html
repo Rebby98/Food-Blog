@@ -97,7 +97,15 @@
         {% for blog in blogs %}
         <tr>
           <td>{{ loop.index }}</td>
-          <td><img src="{{ url_for('static', filename='images/' ~ blog.image) }}" class="blog-img" alt="{{ blog.title }}"></td>
+          <td>
+    {% if blog.image.startswith('http') %}
+        <img src="{{ blog.image }}" class="blog-img" alt="{{ blog.title }}">
+    {% else %}
+        <img src="{{ url_for('static', filename='images/' + blog.image) }}"
+             class="blog-img"
+             alt="{{ blog.title }}">
+    {% endif %}
+</td>
           <td>{{ blog.title }}</td>
           <td>{{ blog.category }}</td>
           <td>{{ blog.date_posted.strftime('%d %b %Y') }}</td>

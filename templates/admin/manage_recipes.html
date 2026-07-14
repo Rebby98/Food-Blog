@@ -93,7 +93,17 @@
         {% for recipe in recipes %}
         <tr>
           <td>{{ loop.index }}</td>
-          <td><img src="{{ url_for('static', filename='images/' ~ recipe.image) }}" class="recipe-img" alt="{{ recipe.title }}"></td>
+          <td>
+{% if recipe.image %}
+    {% if recipe.image.startswith('http') %}
+        <img src="{{ recipe.image }}" class="recipe-img" alt="{{ recipe.title }}">
+    {% else %}
+        <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}"
+             class="recipe-img"
+             alt="{{ recipe.title }}">
+    {% endif %}
+{% endif %}
+</td>
           <td>{{ recipe.title }}</td>
           <td>{{ recipe.cuisine }}</td>
           <td>{{ recipe.diet_type }}</td>

@@ -868,7 +868,6 @@ def delete_blog(blog_id):
 @app.route('/admin/edit_recipe/<int:recipe_id>', methods=['GET', 'POST'])
 def edit_recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
-    categories = Category.query.all()  # ✅ fetch all categories
 
     if request.method == 'POST':
         recipe.title = request.form['title']
@@ -876,30 +875,31 @@ def edit_recipe(recipe_id):
         recipe.ingredients = request.form['ingredients']
         recipe.instructions = request.form['instructions']
         recipe.cuisine = request.form['cuisine']
+        recipe.category_id = request.form['category_id']
         recipe.diet_type = request.form['diet_type']
         recipe.prep_time = request.form['prep_time']
 
-        # ✅ update category
-        recipe.category_id = int(request.form['category_id'])
-
-        # ✅ handle image update
         image = request.files.get("image")
 
+        # Only upload if a NEW image was selected
         if image and image.filename:
-           result = cloudinary.uploader.upload(
-        image,
-        folder="beccafoodies/recipes"
-        )
-
-        image_url = result["secure_url"]
+            result = cloudinary.uploader.upload(
+                image,
+                folder="beccafoodies/recipes"
+            )
+            recipe.image = result["secure_url"]
 
         db.session.commit()
+
         flash("Recipe updated successfully!", "success")
         return redirect(url_for('manage_recipes'))
 
-    return render_template('admin/edit_recipe.html', recipe=recipe, categories=categories)
-
-
+    categories = Category.query.all()
+    return render_template(
+        'admin/edit_recipe.html',
+        recipe=recipe,
+        categories=categories
+    )
 @app.route('/admin/delete_recipe/<int:recipe_id>')
 @login_required
 def delete_recipe(recipe_id):
