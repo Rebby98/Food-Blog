@@ -207,6 +207,65 @@
     );
 }
 
+.category-badge{
+    position:absolute;
+    top:12px;
+    left:12px;
+
+    background:#28a745;
+    color:white;
+
+    padding:6px 12px;
+    border-radius:20px;
+
+    font-size:.8rem;
+    font-weight:600;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+}
+.category-badge{
+    position:absolute;
+    top:12px;
+    left:12px;
+
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.breakfast{
+    background:#f4a261;
+}
+
+.lunch{
+    background:#2a9d8f;
+}
+
+.dinner{
+    background:#264653;
+}
+
+.snacks{
+    background:#e76f51;
+}
+
+.desserts{
+    background:#d63384;
+}
+
+.drinks{
+    background:#0dcaf0;
+}
+
+.healthy{
+    background:#198754;
+}
+
+.kenyan{
+    background:#6f42c1;
+}
 /* Section Header */
 .section-header h2{
     font-size: 2.5rem;
@@ -757,6 +816,12 @@
                     <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}"
                          class="card-img-top"
                          alt="{{ recipe.title }}">
+                             <span class="category-badge">
+        {{ recipe.category }}
+    </span>
+                         <span class="category-badge {{ recipe.category|lower|replace(' ', '-') }}">
+                      {{ recipe.category }}
+                        </span>
                     {% else %}
                     <img src="{{ url_for('static', filename='images/default.png') }}"
                          class="card-img-top"
