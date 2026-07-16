@@ -163,6 +163,10 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text, nullable=False)
     instructions = db.Column(db.Text, nullable=False)
     cuisine = db.Column(db.String(50), nullable=True)
+
+    servings = db.Column(db.Integer, nullable=True)
+    cook_time = db.Column(db.Integer, nullable=True)
+
     diet_type = db.Column(db.String(50), nullable=True)
     prep_time = db.Column(db.String(50), nullable=True)
     goal = db.Column(db.String(100))
@@ -730,6 +734,8 @@ def add_recipe():
             category_id = request.form.get('category_id')
             diet_type = request.form.get('diet_type')
             prep_time = request.form.get('prep_time')
+            cook_time = request.form.get('cook_time')
+            servings = request.form.get('servings')
 
             image_url = None
 
@@ -878,6 +884,8 @@ def edit_recipe(recipe_id):
         recipe.category_id = request.form['category_id']
         recipe.diet_type = request.form['diet_type']
         recipe.prep_time = request.form['prep_time']
+        recipe.cook_time = request.form['cook_time']
+        recipe.servings = request.form['servings']
 
         image = request.files.get("image")
 
