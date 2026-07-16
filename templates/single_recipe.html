@@ -65,31 +65,41 @@
 /* ---------------- RECIPE INFO ---------------- */
 
 .recipe-info{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-    margin:35px 0;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin:25px 0;
 }
 
 .info-card{
-    background:white;
-    padding:18px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    background:#f8f9fa;
+    border:1px solid #ddd;
+    border-radius:30px;
+    padding:8px 18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
     transition:.3s;
+    font-size:15px;
 }
 
 .info-card:hover{
-    transform:translateY(-5px);
+    background:#00a896;
+    color:#fff;
+    transform:translateY(-2px);
 }
 
 .info-card strong{
-    display:block;
-    font-size:22px;
+    font-size:15px;
     color:#00a896;
+    margin:0;
 }
 
+.info-card:hover strong{
+    color:#fff;
+}
 /* ---------------- CONTENT ---------------- */
 
 .ingredients,
@@ -352,24 +362,20 @@ body{
     <h1 class="mt-4 fw-bold">{{ recipe.title }}</h1>
     <div class="recipe-info">
 
-    <div class="info-card">
-        🍽️
-        <strong>{{ recipe.servings }}</strong><br>
-        Servings
-    </div>
+   <div class="info-card">
+    🍽️
+    <span><strong>{{ recipe.servings }}</strong> Servings</span>
+</div>
 
-    <div class="info-card">
-        ⏱️
-        <strong>{{ recipe.prep_time }} mins</strong><br>
-        Prep
-    </div>
+<div class="info-card">
+    ⏱️
+    <span><strong>{{ recipe.prep_time }}</strong> min Prep</span>
+</div>
 
-    <div class="info-card">
-        🔥
-        <strong>{{ recipe.cook_time }} mins</strong><br>
-        Cook
-    </div>
-
+<div class="info-card">
+    🔥
+    <span><strong>{{ recipe.cook_time }}</strong> min Cook</span>
+</div>
 
 
 </div>
