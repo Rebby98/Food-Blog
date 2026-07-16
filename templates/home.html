@@ -227,44 +227,39 @@
     position:absolute;
     top:12px;
     left:12px;
-
-    color:white;
-    padding:6px 12px;
+    padding:6px 14px;
     border-radius:20px;
+    color:white;
     font-size:13px;
     font-weight:600;
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+    z-index:2;
 }
 
+/* Category Colors */
+
 .breakfast{
-    background:#f4a261;
+    background:#F4A261;
 }
 
 .lunch{
-    background:#2a9d8f;
+    background:#2A9D8F;
 }
 
 .dinner{
     background:#264653;
 }
 
-.snacks{
-    background:#e76f51;
+.healthy-foods{
+    background:#28A745;
 }
 
-.desserts{
-    background:#d63384;
+.weight-loss{
+    background:#20C997;
 }
 
-.drinks{
-    background:#0dcaf0;
-}
-
-.healthy{
-    background:#198754;
-}
-
-.kenyan{
-    background:#6f42c1;
+.kenyan-cuisines{
+    background:#D62828;
 }
 /* Section Header */
 .section-header h2{
@@ -704,6 +699,9 @@
                 <a href="{{ url_for('recipes') }}" class="btn btn-success">
                     Explore Recipes
                 </a>
+                                <a href="{{ url_for('blog') }}" class="blog-btn btn-success">
+                    Read Articles
+                </a>
             </div>
 
             <div class="col-lg-6 text-center">
@@ -816,12 +814,23 @@
                     <img src="{{ url_for('static', filename='images/' ~ recipe.image) }}"
                          class="card-img-top"
                          alt="{{ recipe.title }}">
-                             <span class="category-badge">
-        {{ recipe.category }}
-    </span>
-                         <span class="category-badge {{ recipe.category|lower|replace(' ', '-') }}">
-                      {{ recipe.category }}
-                        </span>
+                         <span class="category-badge
+{% if recipe.category == 'Breakfast' %}
+    breakfast
+{% elif recipe.category == 'Lunch' %}
+    lunch
+{% elif recipe.category == 'Dinner' %}
+    dinner
+{% elif recipe.category == 'Healthy Foods' %}
+    healthy-foods
+{% elif recipe.category == 'Weight Loss' %}
+    weight-loss
+{% elif recipe.category == 'Kenyan Cuisines' %}
+    kenyan-cuisines
+{% endif %}
+">
+    {{ recipe.category }}
+</span>
                     {% else %}
                     <img src="{{ url_for('static', filename='images/default.png') }}"
                          class="card-img-top"
