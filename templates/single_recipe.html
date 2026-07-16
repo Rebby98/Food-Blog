@@ -41,9 +41,46 @@
       padding: 20px;
       margin-bottom: 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      color: green;
-      font-size: 20px;
+      color: black;
+      font-size: 25px;
     }
+
+    .ingredient-list{
+    list-style:none;
+    padding:0;
+}
+
+.ingredient-list li{
+    background:#fff;
+    margin-bottom:12px;
+    padding:14px 18px;
+    border-radius:12px;
+    border:1px solid #eee;
+    transition:.3s;
+}
+
+.ingredient-list label{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    gap:12px;
+    width:100%;
+}
+
+.ingredient-check{
+    width:20px;
+    height:20px;
+    accent-color:#00a896;
+}
+
+.ingredient-check:checked + span{
+    text-decoration:line-through;
+    color:#999;
+}
+
+.ingredient-list li:hover{
+    background:#f5fffd;
+}
     .save-btn {
       background: #ff6600;
       color: white;
@@ -89,7 +126,6 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link active mx-3" href="{{ url_for('home') }}">Home</a></li>
@@ -145,11 +181,20 @@
       <div class="col-md-5">
         <div class="ingredients">
           <h3 class="fw-bold mb-3">Ingredients</h3>
-          <ul class="list-group list-group-flush">
-            {% for ingredient in recipe.ingredients.split(',') %}
-              <li class="list-group-item">{{ ingredient.strip() }}</li>
-            {% endfor %}
-          </ul>
+<h3 class="section-title">🥕 Ingredients</h3>
+
+<ul class="ingredient-list">
+    {% for ingredient in recipe.ingredients.split('\n') %}
+    {% if ingredient.strip() %}
+    <li>
+        <label>
+            <input type="checkbox" class="ingredient-check">
+            <span>{{ ingredient }}</span>
+        </label>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
         </div>
       </div>
 
